@@ -44,51 +44,27 @@ public abstract class Document {
 		return tokens;
 	}
 	
-	private HashMap<Character, String> createHashMap(char[] charArr){
-		HashMap<Character, String> hm = new HashMap<Character,String>();
-		for(char c: charArr){
-			hm.put(c,"");
-		}
-		return hm;
-	}
-	
-	// This is a helper function that returns the number of syllables
-	// in a word.  You should write this and use it in your 
-	// BasicDocument class.
-	// You will probably NOT need to add a countWords or a countSentences method
-	// here.  The reason we put countSyllables here because we'll use it again
-	// next week when we implement the EfficientDocument class.
-	
-	protected int countSyllables(String word)
-	{	word=word.toLowerCase();
-		char[] vowels = {'e','y','u','i','o','a'};
-		
-		HashMap<Character,String> hm =createHashMap(vowels);
-		
-		int count=0;
-		boolean loneE=false;
-		boolean continuous=false;
-		int maxInd= word.length()-1;
-		
-		for(int i=maxInd;i>=0;i--){
-			
-			if(i == maxInd && word.charAt(maxInd) == 'e' && !hm.containsKey(word.charAt(maxInd-1))){
-				loneE=true;
+	protected static int countSyllables(String word)
+	{
+		int numSyllables = 0;
+		boolean newSyllable = true;
+		String vowels = "aeiouy";
+		char[] cArray = word.toCharArray();
+		for (int i = 0; i < cArray.length; i++)
+		{
+		    if (i == cArray.length-1 && Character.toLowerCase(cArray[i]) == 'e' 
+		    		&& newSyllable && numSyllables > 0) {
+                numSyllables--;
+            }
+		    if (newSyllable && vowels.indexOf(Character.toLowerCase(cArray[i])) >= 0) {
+				newSyllable = false;
+				numSyllables++;
 			}
-			
-			if(hm.containsKey(word.charAt(i)) && !continuous){
-				count++;
-				continuous = true;
-			} else if(!hm.containsKey(word.charAt(i))) {
-				continuous =false;
-			}	
+			else if (vowels.indexOf(Character.toLowerCase(cArray[i])) < 0) {
+				newSyllable = true;
+			}
 		}
-		
-		if(loneE && count>1){
-			count=count-1;
-		}
-		
-		return count;
+		return numSyllables;
 	}
 	
 	/** A method for testing
@@ -151,7 +127,7 @@ public abstract class Document {
 	/** return the Flesch readability score of this document */
 	public double getFleschScore()
 	{
-		int numWords = getNumWords();
-        return 206.858-1.015*(Math.round(((double)numWords/(double)getNumSentences()*100d))/100d)-84.6*(Math.round(((double)getNumSyllables()/(double)numWords)*100d)/100d);
+		double numWords = (double)getNumWords();
+		return 206.835-(1.015*((numWords)/getNumSentences()))-84.6*((double)getNumSyllables()/numWords);
 	}
 }

@@ -12,8 +12,7 @@ public class LaunchClass {
 	}
 	
 	public document.Document getDocument(String text) {
-//		return new document.EfficientDocument(text);
-		return new document.BasicDocument(text);
+		return new document.EfficientDocument(text);
 	}
 	
 	public textgen.MarkovTextGenerator getMTG() {

@@ -17,7 +17,7 @@ public class DocumentBenchmarking {
 
 	    // Run each test more than once to get bigger numbers and less noise.
 	    // You can try playing around with this number.
-	    int trials = 100;
+	    int trials = 200;
 
 	    // The text to test on
 	    String textfile = "data/warAndPeace.txt";
@@ -34,33 +34,38 @@ public class DocumentBenchmarking {
 		// You can play around with this.
 		int start = 50000;
 		
-		// TODO: Fill in the rest of this method so that it runs two loops
-		// and prints out timing results as described in the assignment 
+		long startTime;
+		long endTime;
+		double totalTime;
+		
+		// Print out timing results as described in the assignment 
 		// instructions.
 		for (int numToCheck = start; numToCheck < numSteps*increment + start; 
 				numToCheck += increment)
 		{
-			// numToCheck holds the number of characters that you should read from the 
-			// file to create both a BasicDocument and an EfficientDocument.  
+			System.out.print(numToCheck+"\t");
 			
-			/* Each time through this loop you should:
-			 * 1. Print out numToCheck followed by a tab (\t) (NOT a newline)
-			 * 2. Read numToCheck characters from the file into a String
-			 *     Hint: use the helper method below.
-			 * 3. Time a loop that runs trials times (trials is the variable above) that:
-			 *     a. Creates a BasicDocument 
-			 *     b. Calls fleshScore on this document
-			 * 4. Print out the time it took to complete the loop in step 3 
-			 *      (on the same line as the first print statement) followed by a tab (\t)
-			 * 5. Time a loop that runs trials times (trials is the variable above) that:
-			 *     a. Creates an EfficientDocument 
-			 *     b. Calls fleshScore on this document
-			 * 6. Print out the time it took to complete the loop in step 5 
-			 *      (on the same line as the first print statement) followed by a newline (\n) 
-			 */  
+			String allText = getStringFromFile(textfile, numToCheck);
+			
+			//Calculating how long it takes to create and execute BasicDocument
+			startTime = System.nanoTime();
+			for(int i=0; i<trials;i++){
+				new BasicDocument(allText).getFleschScore();
+			}
+			endTime = System.nanoTime();
+			totalTime =  (double)(endTime-startTime)/1000000000;
+			System.out.print(totalTime+"\t");
+			 
+			//Calculating how long it takes to create and execute EfficientDocument
+			startTime = System.nanoTime();
+			for(int i=0; i<trials;i++){
+				new EfficientDocument(allText).getFleschScore();
+			}
+			endTime = System.nanoTime();
+			totalTime = (double)(endTime-startTime)/1000000000;
+			System.out.print(totalTime+"\n");
 			 
 		}
-	
 	}
 	
 	/** Get a specified number of characters from a text file

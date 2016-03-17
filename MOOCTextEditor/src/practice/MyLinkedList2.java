@@ -24,7 +24,10 @@ public class MyLinkedList2<E> {
 		llist.print(llist.head);
 		System.out.println("tail");
 		System.out.println(llist.tail.data);
+		llist.findNthNumToLast1(llist.head,2);
+		llist.findNthToLast(llist.head,2);
 	}
+	
 	//Add to the end of the singly linked list
 	private void addNode(E val){
 		LLNode<E> node = new LLNode(val);
@@ -35,6 +38,56 @@ public class MyLinkedList2<E> {
 			this.tail.next = node;
 		}
 		this.tail = node;
+	}
+	
+	//wrapper class
+	class Index{
+		public int value = 0;
+	}
+	
+	private LLNode<E> findNthToLast(LLNode<E> head, int k){
+		//2 pointers
+		//one points at the first element
+		//one points at the kth element
+		
+		LLNode<E> iPointsTo = head;
+		LLNode<E> jPointsTo = head;
+		
+		//set j to point at the kth element
+		for(int i=0; i<k;i++){
+			if(jPointsTo == null) throw new IndexOutOfBoundsException();
+			jPointsTo = jPointsTo.next;
+		}
+		
+		//increment i and j by the same amount until j reaches the end of the list
+		while(jPointsTo != null){
+			jPointsTo = jPointsTo.next;
+			iPointsTo = iPointsTo.next;
+		}
+		System.out.println(iPointsTo.data);
+		return iPointsTo;
+	}
+	
+	public LLNode<E> findNthNumToLast1(LLNode<E> head, int k){
+		return  findNthToLast1(head,k, new Index());
+	}
+	
+	private LLNode<E> findNthToLast1(LLNode<E> head, int k, Index i){
+	
+		if(head ==null) return null;
+		
+		LLNode<E> node = findNthToLast1(head.next, k, i);
+		
+		//executes after the node = tail
+		i.value++;
+		System.out.println("i "+i.value);
+		if(i.value==k){
+			System.out.println("returning head "+head.data);
+			return head;
+		}
+		System.out.println(node);
+		return node;
+		
 	}
 	
 	private void removeDuplicates(LLNode<E> head){

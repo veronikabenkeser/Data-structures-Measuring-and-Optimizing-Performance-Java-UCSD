@@ -7,18 +7,18 @@ import java.util.ListIterator;
 public class MyLinkedList2<E> {
 	LLNode<E> head;
 	LLNode<E> tail;
+
+	private static boolean addOne = false;
 	
 	public static void main(String args[]){
 		MyLinkedList2<Integer> llist = new MyLinkedList2<Integer>();
-//		llist.addNode(2);
-//		llist.addNode(199);
-//		llist.addNode(10);
-//		llist.addNode(1);
-//		llist.addNode(10);
-//		llist.addNode(10);
-//		llist.addNode(19);
-//		
-		
+		llist.addNode(2);
+		llist.addNode(199);
+		llist.addNode(10);
+		llist.addNode(1);
+		llist.addNode(10);
+		llist.addNode(10);
+		llist.addNode(19);
 		
 		llist.addNode(3);
 		llist.addNode(5);
@@ -29,35 +29,30 @@ public class MyLinkedList2<E> {
 		llist.addNode(1);
 		
 		MyLinkedList2<Integer> llist1 = new MyLinkedList2<Integer>();
-	
+		llist1.addNode(9);
+		llist1.addNode(9);
+		llist1.addNode(9);
 
-		llist1.addNode(2);
-		llist1.addNode(1);
-		llist1.addNode(3);
-		llist1.addNode(1);
+		MyLinkedList2<Integer> llist2 = new MyLinkedList2<Integer>();	
+		llist2.addNode(9);
 
+		MyLinkedList2<Integer> sumList = new MyLinkedList2<Integer>();
 		
-		MyLinkedList2<Integer> llist2 = new MyLinkedList2<Integer>();
-		llist2.addNode(5);
-//		llist2.addNode(4);
-//		llist2.addNode(2);
-		llist2.addNode(8);
+		llist.removeDuplicates(llist.head);
+		llist.print(llist.head);
+		llist.addNode(19);
+		llist.removeDuplicates(llist.head);
+		llist.print(llist.head);
+		System.out.println("tail");
+		System.out.println(llist.tail.data);
+		llist.findNthNumToLast1(llist.head,2);
+		llist.findNthToLast(llist.head,2);
 		
-//		llist.removeDuplicates(llist.head);
-//		llist.print(llist.head);
-//		llist.addNode(19);
-//		llist.removeDuplicates(llist.head);
-//		llist.print(llist.head);
-//		System.out.println("tail");
-//		System.out.println(llist.tail.data);
-//		llist.findNthNumToLast1(llist.head,2);
-//		llist.findNthToLast(llist.head,2);
-		
-//		llist.pivotAround(5, llist.head);
-//		llist.print(llist.head);
-//		
-		llist.recursiveAdd(llist1.head, llist2.head);
-		llist.print(llist1.head);
+		llist.pivotAround(5, llist.head);
+		llist.print(llist.head);
+
+		sumList.head = llist.addLinkedLists(llist1.head, llist2.head);
+		llist.print(sumList.head);
 	}
 	
 	/*
@@ -66,13 +61,20 @@ public class MyLinkedList2<E> {
 	 * For example, head1.data = 2. head1.next.data = 1. head1.next.next.data = 3 is 312. 
 	 * head2.data=5. head2.next.data =8 is 85. The result should be 7 -> 9 -> 3, which is 397. */
 	
-	private LLNode<Integer> recursiveAdd(LLNode<Integer> head1, LLNode<Integer> head2){
+	private LLNode<Integer> addLinkedLists(LLNode<Integer> head1, LLNode<Integer> head2){
+		return recursiveAdd (head1,head2, new LLNode<Integer>(0));
+	}
+	
+private LLNode<Integer> recursiveAdd(LLNode<Integer> head1, LLNode<Integer> head2, LLNode<Integer> result){
+		
 		if(head1 == null && head2 == null){
+			
 			return null;
 		}
 		
 		LLNode<Integer> next1;
 		LLNode<Integer> next2;
+		LLNode<Integer> nextRes;
 		
 		if(head1==null){
 			next1=null;
@@ -86,18 +88,47 @@ public class MyLinkedList2<E> {
 			next2 = head2.next;
 		}
 		
-		LLNode<Integer> node = recursiveAdd(next1, next2);
+		if(next1 == null && next2 == null){
+			result.next=null;
+		} else {
+			result.next = new LLNode<Integer>(0);
+		}
+				
+		LLNode<Integer> node = recursiveAdd(next1, next2, result.next);
+	
 		
 		int sum;
 		if(head1==null){
 			sum = (int)head2.data;
+			
 		} else if (head2==null){
 			sum=(int)head1.data;
 		} else {
 			sum  = (int)head1.data+(int)head2.data;
 		}
-		head1.data = (Integer)(sum);
-		return head1;
+	
+		if(sum>=10){
+			sum-=10;
+			
+			if(result.next ==null){
+				result.next = new LLNode<Integer>(1);
+			} else {
+				LLNode<Integer> nextE  = result.next;
+				nextE.data = (int)nextE.data+1;
+				//propagate changes
+				while(nextE !=null && nextE.data>=10){
+					nextE.data -=10;
+					if(nextE.next ==null){
+						nextE.next = new LLNode(1);
+					}else{
+						nextE.next.data=(int)nextE.next.data+1;
+					}
+					nextE=nextE.next;
+				}
+			}
+		}
+		result.data = sum;
+		return result;
 	}
 	
 	private boolean deleteLast(LLNode<E> head){
@@ -129,7 +160,7 @@ public class MyLinkedList2<E> {
 	
 	private void pivotAround(int val, LLNode<E> head){
 		LLNode<E> curr = head;
-		System.out.println("CURRE"+curr.data);
+	
 		while(curr !=null){
 			if(curr != head && (int)curr.data< 5){
 				System.out.println("curr is not head and less than 5 :"+curr.data);
@@ -309,6 +340,7 @@ public class MyLinkedList2<E> {
 	}
 	
 	private void print(LLNode<E> head){
+		System.out.println();
 		LLNode<E> node = head;
 		while(node !=null){
 			System.out.print(node.data);

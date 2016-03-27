@@ -57,6 +57,13 @@ public class AutoCompleteDictionaryTrieTester {
 		assertEquals("Testing size for large dict", 4438, largeDict.size());
 	}
 	
+	@Test
+	public void testSizeAfterAdd(){
+		System.out.println("size before a duplicate is added: "+ smallDict.size());
+		smallDict.addWord("Hello");
+		System.out.println("size after a duplicate is added: "+ smallDict.size());
+		
+	}
 	/** Test the isWord method */
 	@Test
 	public void testIsWord()
@@ -88,7 +95,6 @@ public class AutoCompleteDictionaryTrieTester {
 	@Test
 	public void addWord()
 	{
-		
 		
 		assertEquals("Asserting hellow is not in empty dict", false, emptyDict.isWord("hellow"));
 		assertEquals("Asserting hellow is not in small dict", false, smallDict.isWord("hellow"));
@@ -159,8 +165,4 @@ public class AutoCompleteDictionaryTrieTester {
 		completions = smallDict.predictCompletions("x", 5);
 		assertEquals(0, completions.size());
 	}
-	
-	
-	
-	
 }

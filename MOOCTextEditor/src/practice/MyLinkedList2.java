@@ -29,31 +29,111 @@ public class MyLinkedList2<E> {
 		llist.addNode(1);
 		
 		MyLinkedList2<Integer> llist1 = new MyLinkedList2<Integer>();
-		llist1.addNode(9);
+//		llist1.addNode(9);
 		llist1.addNode(9);
 		llist1.addNode(9);
 
+		
 		MyLinkedList2<Integer> llist2 = new MyLinkedList2<Integer>();	
-		llist2.addNode(9);
+//		llist2.addNode(9);
+//		llist2.addNode(9);
+//		llist2.addNode(9);
 
+		llist2.addNode(1);
 		MyLinkedList2<Integer> sumList = new MyLinkedList2<Integer>();
-		
-		llist.removeDuplicates(llist.head);
-		llist.print(llist.head);
-		llist.addNode(19);
-		llist.removeDuplicates(llist.head);
-		llist.print(llist.head);
-		System.out.println("tail");
-		System.out.println(llist.tail.data);
-		llist.findNthNumToLast1(llist.head,2);
-		llist.findNthToLast(llist.head,2);
-		
-		llist.pivotAround(5, llist.head);
-		llist.print(llist.head);
+//		
+//		llist.removeDuplicates(llist.head);
+//		llist.print(llist.head);
+//		llist.addNode(19);
+//		llist.removeDuplicates(llist.head);
+//		llist.print(llist.head);
+//		System.out.println("tail");
+//		System.out.println(llist.tail.data);
+//		llist.findNthNumToLast1(llist.head,2);
+//		llist.findNthToLast(llist.head,2);
+//		
+//		llist.pivotAround(5, llist.head);
+//		llist.print(llist.head);
 
+//		sumList.head = llist.addReversedLinkedLists(llist1.head, llist2.head);
+//		llist.print(sumList.head);
+		
 		sumList.head = llist.addLinkedLists(llist1.head, llist2.head);
 		llist.print(sumList.head);
 	}
+	
+	
+	private LLNode<Integer> addLinkedLists(LLNode<Integer> head1, LLNode<Integer> head2){
+		return recurAdd (head1,head2, new Index());
+	}
+	
+	private LLNode<Integer> recurAdd(LLNode<Integer> head1, LLNode<Integer> head2, Index i){
+		
+		if(head1 == null && head2 == null){
+			System.out.println("BOTH NULL");
+			return null;
+		}
+		
+		i.value++;
+		System.out.println("i +1 is "+i.value);
+		
+		
+		LLNode<Integer> nextHead1;
+		LLNode<Integer> nextHead2;
+		
+		if(head1 == null){
+			nextHead1=null;
+		}else{
+			nextHead1 = head1.next;
+		}
+		
+		if(head2 ==null){
+			nextHead2 =null;
+		} else{
+			nextHead2 = head2.next;
+		}
+		
+		LLNode<Integer> node = recurAdd( nextHead1, nextHead2, i);
+		
+		int sum;
+		
+		if(head1==null){
+			sum = (int)head2.data;
+		} else if(head2==null){
+			sum = (int)head1.data;
+		} else{
+			sum = (int)head1.data + (int)head2.data;
+		}
+		
+		System.out.println("sum is "+sum);
+		
+		
+		if(addOne){
+			sum++;
+			addOne=false;
+		}
+		
+		if(sum>=10){
+			sum-=10;
+			addOne=true;
+		}
+		
+		head1.data = sum;
+		
+		i.value--;
+		System.out.println("i - 1 is "+i.value);
+		
+		//reached the last element
+		if(i.value==0 && addOne){
+			LLNode<Integer> newElem = new LLNode(1);
+			addOne=false;
+			newElem.next = head1;
+			head1=newElem;
+		}
+		
+		return head1;
+	}
+	
 	
 	/*
 	 * This method returns the starting node of the sum of two linked lists, where the number is 
@@ -61,11 +141,11 @@ public class MyLinkedList2<E> {
 	 * For example, head1.data = 2. head1.next.data = 1. head1.next.next.data = 3 is 312. 
 	 * head2.data=5. head2.next.data =8 is 85. The result should be 7 -> 9 -> 3, which is 397. */
 	
-	private LLNode<Integer> addLinkedLists(LLNode<Integer> head1, LLNode<Integer> head2){
-		return recursiveAdd (head1,head2, new LLNode<Integer>(0));
+	private LLNode<Integer> addReversedLinkedLists(LLNode<Integer> head1, LLNode<Integer> head2){
+		return recurAddReversed (head1,head2, new LLNode<Integer>(0));
 	}
 	
-private LLNode<Integer> recursiveAdd(LLNode<Integer> head1, LLNode<Integer> head2, LLNode<Integer> result){
+private LLNode<Integer> recurAddReversed(LLNode<Integer> head1, LLNode<Integer> head2, LLNode<Integer> result){
 		
 		if(head1 == null && head2 == null){
 			
@@ -94,7 +174,7 @@ private LLNode<Integer> recursiveAdd(LLNode<Integer> head1, LLNode<Integer> head
 			result.next = new LLNode<Integer>(0);
 		}
 				
-		LLNode<Integer> node = recursiveAdd(next1, next2, result.next);
+		LLNode<Integer> node =  recurAddReversed(next1, next2, result.next);
 	
 		
 		int sum;
@@ -347,6 +427,7 @@ private LLNode<Integer> recursiveAdd(LLNode<Integer> head1, LLNode<Integer> head
 			System.out.print(" -> ");
 			node = node.next;
 		}
+		System.out.println();
 	}
 	
 	class LLNode<E> {

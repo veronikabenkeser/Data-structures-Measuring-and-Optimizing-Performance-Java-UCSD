@@ -42,6 +42,7 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 	@Override
 	public void train(String sourceText)
 	{	
+		
 		//Per assignment specifications, this method does not remove the original word lists.
 		//clearOldTrainingSet();
 		if(sourceText == null|| sourceText =="")return;

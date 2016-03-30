@@ -13,7 +13,7 @@ import org.junit.Test;
 
 /**
  * @author UC San Diego MOOC team
- *
+ * @author Veronika Benkeser
  */
 public class AutoCompleteDictionaryTrieTester {
 
@@ -22,6 +22,8 @@ public class AutoCompleteDictionaryTrieTester {
 	AutoCompleteDictionaryTrie emptyDict; 
 	AutoCompleteDictionaryTrie smallDict;
 	AutoCompleteDictionaryTrie largeDict;
+	
+	AutoCompleteMatchCase smallDict2;
 	
 	/**
 	 * @throws java.lang.Exception
@@ -32,6 +34,8 @@ public class AutoCompleteDictionaryTrieTester {
 		emptyDict = new AutoCompleteDictionaryTrie();
 		smallDict = new AutoCompleteDictionaryTrie();
 		largeDict = new AutoCompleteDictionaryTrie();
+		
+		smallDict2 = new AutoCompleteMatchCase();
 
 		smallDict.addWord("Hello");
 		smallDict.addWord("HElLo");
@@ -42,6 +46,10 @@ public class AutoCompleteDictionaryTrieTester {
 		smallDict.addWord("hey");
 		smallDict.addWord("a");
 		smallDict.addWord("subsequent");
+		
+		smallDict2.addWord("apple");
+		smallDict2.addWord("Christine");
+		smallDict2.addWord("cats");
 		
 		DictionaryLoader.loadDictionary(largeDict, dictFile);
 	}
@@ -88,7 +96,17 @@ public class AutoCompleteDictionaryTrieTester {
 		assertEquals("Testing isWord on small: subsequent", true, smallDict.isWord("subsequent"));
 		assertEquals("Testing isWord on large: subsequent", true, largeDict.isWord("subsequent"));
 		
-		
+		assertEquals("Testing isWord in MatchCase: apple", true, smallDict2.isWord("apple"));
+		assertEquals("Testing isWord in MatchCase: Apple", true, smallDict2.isWord("Apple"));
+		assertEquals("Testing is Word in MatchCase: christine", false, smallDict2.isWord("christine"));
+		assertEquals("Testing is Word in MatchCase: Christine",true,smallDict2.isWord("Christine"));
+		assertEquals("Testing is Word in MatchCase: CHRISTINE",true,smallDict2.isWord("CHRISTINE"));
+		assertEquals("Testing is Word in MatchCase: ChriStine",false,smallDict2.isWord("ChriStine"));
+		assertEquals("Testing is Word in MatchCase: cats", true, smallDict2.isWord("cats"));
+		assertEquals("Testing is Word in MatchCase: Cats", true, smallDict2.isWord("Cats"));
+		assertEquals("Testing is Word in MatchCase: CATS", true, smallDict2.isWord("CATS"));
+		assertEquals("Testing is Word in MatchCase: caTs", false, smallDict2.isWord("caTs"));
+
 	}
 	
 	/** Test the addWord method */

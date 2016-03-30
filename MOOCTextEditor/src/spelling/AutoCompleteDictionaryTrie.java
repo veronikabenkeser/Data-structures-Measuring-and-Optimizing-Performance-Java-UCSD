@@ -97,7 +97,7 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public boolean isWord(String s) 
 	{
 	    // TODO: Implement this method
-		if (s.length()<1 || s == "\\s+")return false;
+		if (s.length()<1 || s.matches("\\s+")) return false;
 		s = s.toLowerCase();
 		TrieNode node=root;
 		for(int i=0; i<s.length();i++){

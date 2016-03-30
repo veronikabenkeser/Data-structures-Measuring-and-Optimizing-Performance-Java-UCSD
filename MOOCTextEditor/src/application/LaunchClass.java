@@ -2,6 +2,8 @@ package application;
 
 import java.util.Random;
 
+import spelling.AutoCompleteMatchCase;
+
 
 public class LaunchClass {
 	
@@ -24,13 +26,15 @@ public class LaunchClass {
 	}
 	
     public spelling.AutoComplete getAutoComplete() {
-        spelling.AutoCompleteDictionaryTrie tr = new spelling.AutoCompleteDictionaryTrie();
-        spelling.DictionaryLoader.loadDictionary(tr, dictFile);
+//        spelling.AutoCompleteDictionaryTrie tr = new spelling.AutoCompleteDictionaryTrie();
+        spelling.AutoCompleteMatchCase tr = new spelling.AutoCompleteMatchCase();
+
+    	spelling.DictionaryLoader.loadDictionary(tr, dictFile);
         return tr;
     }
     
     public spelling.Dictionary getDictionary() {
-        spelling.Dictionary d = new spelling.DictionaryBST();
+        spelling.Dictionary d = new spelling.DictionaryBSTMatchCase();
         spelling.DictionaryLoader.loadDictionary(d, dictFile);
     	return d;
     }
